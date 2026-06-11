@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Bet;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,13 @@ class BetRepository extends ServiceEntityRepository
         parent::__construct($registry, Bet::class);
     }
 
-    //    /**
-    //     * @return Bet[] Returns an array of Bet objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Bet
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.author = :user')
+            ->setParameter('user', $user)
+            ->orderBy('b.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

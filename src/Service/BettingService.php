@@ -34,6 +34,8 @@ final class BettingService
             ->setDate(new \DateTime())
             ->setStatus(BetStatusEnum::Waiting);
 
+        $user->setBalance($user->getBalance() - $amount);
+
         $this->oddsCalculatorService->recalculateOdds($event, $outcome);
 
         $this->entityManager->persist($bet);

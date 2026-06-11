@@ -17,7 +17,7 @@
     </div>
 
     <div class="px-4 pb-5">
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid grid-cols-{{ event.outcomes|length }} gap-2">
             {% for outcome in event.outcomes %}
                 <button type="button"
                         data-action="live#action"

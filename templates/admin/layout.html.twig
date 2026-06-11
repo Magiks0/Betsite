@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html class="h-full bg-gray-950">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { red: '#ef4444', dark: '#111827' } } } } }
+    </script>
+</head>
+<body class="h-full text-gray-200">
+<div class="flex h-screen">
+    <aside class="w-64 bg-gray-900 border-r border-gray-800 p-6">
+        <h1 class="text-brand-red font-black text-2xl uppercase mb-10 tracking-widest">Admin Hub</h1>
+        <nav class="space-y-4">
+            <a href="{{ path('admin_users_index') }}" class="flex items-center gap-3 hover:text-brand-red transition">
+                <span>👥 Utilisateurs</span>
+            </a>
+            <a href="{{ path('manager_events_index') }}" class="flex items-center gap-3 hover:text-brand-red transition">
+                <span>🏆 Événements</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-8">
+        <div class="max-w-6xl mx-auto">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-10">
+        <h1 class="text-3xl font-bold text-white mb-8">Mon Compte</h1>
+
+        <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-bold text-white mb-2">Mon Solde</h2>
+            <p class="text-3xl font-black text-yellow-400">{{ app.user.balance|number_format(2, '.', ',') }} €</p>
+        </div>
+            {{ include('account/form/_form.html.twig', {form: form}) }}
+
+        <h2 class="text-2xl font-bold text-white mb-6">Mes Paris en cours</h2>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-gray-400">
+                <thead class="bg-gray-800 text-xs uppercase font-bold text-gray-500">
+                <tr>
+                    <th class="px-6 py-3">Événement</th>
+                    <th class="px-6 py-3">Sélection</th>
+                    <th class="px-6 py-3">Cote</th>
+                    <th class="px-6 py-3">Mise</th>
+                    <th class="px-6 py-3">Gains Potentiels</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800">
+                {% for bet in bets %}
+                    <tr class="bg-[#1a1a1a] hover:bg-[#222] transition">
+                        <td class="px-6 py-4 font-bold text-white">{{ bet.outcome.event.competitors }}</td>
+                        <td class="px-6 py-4">{{ bet.outcome.label }}</td>
+                        <td class="px-6 py-4 font-bold text-yellow-400">{{ bet.odd|number_format(2) }}</td>
+                        <td class="px-6 py-4">{{ bet.amount|number_format(2) }} €</td>
+                        <td class="px-6 py-4 font-bold text-green-400">{{ (bet.amount * bet.odd)|number_format(2) }} €</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">Aucun pari en cours pour le moment.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

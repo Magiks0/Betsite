@@ -40,7 +40,7 @@ class BetFixtures extends Fixture implements DependentFixtureInterface
             $bet->setAmount(rand(10, 100));
 
             // 4. Date du pari
-            $bet->setDate((new \DateTimeImmutable())->format('Y-m-d H:i:s'));
+            $bet->setDate((new \DateTime()));
 
             // 5. Statut
             $bet->setStatus($statuses[array_rand($statuses)]);

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Bet;
+use App\Twig\Components\EventCard;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;

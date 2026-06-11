@@ -102,9 +102,7 @@ class EventCard
                 return new RedirectResponse('/login');
             }
 
-            $amount = $this->amount;
-
-            $bettingService->placeBet($user, $this->getEvent(), $this->selectedOutcomeId, $amount);
+            $bettingService->placeBet($user, $this->getEvent(), $this->selectedOutcomeId, $this->amount);
 
             $this->isBetFormOpen = false;
             $this->amount = 0.0;

@@ -1,0 +1,28 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+    <h2 class="text-3xl font-bold text-white mb-8">Utilisateurs</h2>
+
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+        <table class="w-full text-left border-collapse">
+            <thead>
+            <tr class="text-gray-500 text-xs uppercase border-b border-gray-800">
+                <th class="pb-4">Email</th>
+                <th class="pb-4">Rôles</th>
+                <th class="pb-4 text-right">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-sm">
+            {% for user in users %}
+                <tr class="border-b border-gray-800 last:border-0 hover:bg-gray-800/30">
+                    <td class="py-4">{{ user.email }}</td>
+                    <td class="py-4 font-mono text-xs text-brand-red">{{ user.roles|join(', ') }}</td>
+                    <td class="py-4 text-right">
+                        <a href="{{ path('admin_users_suspend', {id: user.id}) }}" class="bg-red-900/30 text-red-400 px-3 py-1 rounded hover:bg-red-900 transition">Suspendre</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

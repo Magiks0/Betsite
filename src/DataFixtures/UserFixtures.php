@@ -37,8 +37,7 @@ class UserFixtures extends Fixture
             $user->setRoles(['ROLE_USER']);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'joueur123'));
 
-            // On simule un dépôt initial (portefeuille fictif) si tu as créé la propriété
-            // $user->setBalance(1000.00);
+             $user->setBalance(1000.00);
 
             $manager->persist($user);
             $this->addReference('user_' . $i, $user);

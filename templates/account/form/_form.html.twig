@@ -1,0 +1,14 @@
+<div class="max-w-md mx-auto bg-gray-900 p-8 rounded-xl border border-gray-800">
+    <h2 class="text-2xl font-bold text-white mb-6">Déposer des fonds</h2>
+
+    {{ form_start(form) }}
+    <div class="relative mb-6">
+        {{ form_widget(form.balance) }}
+        <div class="absolute right-4 top-3 text-gray-500 font-bold">€</div>
+    </div>
+
+    <button type="submit" class="w-full bg-brand-red hover:bg-red-700 text-white font-bold py-3 rounded-lg transition uppercase tracking-wider">
+        Valider le dépôt
+    </button>
+    {{ form_end(form) }}
+</div>
