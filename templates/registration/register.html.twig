@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - BetPlatform{% endblock %}
+
+{% block body %}
+    <div class="flex items-center justify-center py-12">
+        <div class="bg-brand-card w-full max-w-md p-8 rounded-lg border border-gray-800 shadow-2xl">
+
+            <h1 class="text-2xl font-black italic uppercase tracking-tighter text-white text-center mb-6">
+                Créer un <span class="text-brand-red">Compte</span>
+            </h1>
+
+            {% if form_errors(registrationForm) %}
+                <div class="bg-brand-red/20 border border-brand-red text-red-200 px-4 py-3 rounded mb-4 text-sm text-center">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
+
+            {{ form_start(registrationForm) }}
+
+            <div class="mb-4">
+                {{ form_label(registrationForm.email, 'Adresse Email', {
+                    'label_attr': {'class': 'block text-gray-400 text-sm font-bold mb-2'}
+                }) }}
+                {{ form_widget(registrationForm.email, {
+                    'attr': {'class': 'w-full bg-brand-dark border border-gray-700 text-white rounded px-4 py-3 focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition'}
+                }) }}
+                <div class="text-brand-red text-xs mt-1">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {
+                    'label_attr': {'class': 'block text-gray-400 text-sm font-bold mb-2'}
+                }) }}
+                {{ form_widget(registrationForm.plainPassword, {
+                    'attr': {'class': 'w-full bg-brand-dark border border-gray-700 text-white rounded px-4 py-3 focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition'}
+                }) }}
+                <div class="text-brand-red text-xs mt-1">
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+            </div>
+
+            <div class="mb-6 flex items-start mt-6">
+                <div class="flex items-center h-5">
+                    {{ form_widget(registrationForm.agreeTerms, {
+                        'attr': {'class': 'w-4 h-4 rounded bg-gray-700 border-gray-600 focus:ring-brand-red focus:ring-2 accent-brand-red cursor-pointer'}
+                    }) }}
+                </div>
+                <div class="ml-3 text-sm">
+                    {{ form_label(registrationForm.agreeTerms, 'Je confirme avoir plus de 18 ans et accepter les conditions générales.', {
+                        'label_attr': {'class': 'font-medium text-gray-300 cursor-pointer'}
+                    }) }}
+                    <div class="text-brand-red text-xs mt-1">
+                        {{ form_errors(registrationForm.agreeTerms) }}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-white hover:bg-gray-200 text-black font-bold py-3 px-4 rounded transition uppercase tracking-wide">
+                Valider l'inscription
+            </button>
+
+            <p class="text-center text-gray-500 text-sm mt-6">
+                Déjà un compte ? <a href="{{ path('app_login') }}" class="text-brand-red hover:text-white transition font-semibold">Se connecter</a>
+            </p>
+
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+{% endblock %}

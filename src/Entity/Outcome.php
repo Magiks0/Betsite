@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EndingsRepository;
+use App\Repository\OutcomeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EndingsRepository::class)]
-class Endings
+#[ORM\Entity(repositoryClass: OutcomeRepository::class)]
+class Outcome
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,15 +16,19 @@ class Endings
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $label = null;
 
     #[ORM\Column]
-    private ?int $odd = null;
+    private ?float $currentOdd = 1.50;
+
+    #[ORM\ManyToOne(inversedBy: 'endings')] // Lié à la propriété $endings de ton Event
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Event $event = null;
 
     /**
      * @var Collection<int, Bet>
      */
-    #[ORM\OneToMany(targetEntity: Bet::class, mappedBy: 'ending')]
+    #[ORM\OneToMany(targetEntity: Bet::class, mappedBy: 'outcome', orphanRemoval: true)]
     private Collection $bets;
 
     public function __construct()
@@ -37,26 +41,38 @@ class Endings
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getLabel(): ?string
     {
-        return $this->name;
+        return $this->label;
     }
 
-    public function setName(string $name): static
+    public function setLabel(string $label): static
     {
-        $this->name = $name;
+        $this->label = $label;
 
         return $this;
     }
 
-    public function getOdd(): ?int
+    public function getCurrentOdd(): ?float
     {
-        return $this->odd;
+        return $this->currentOdd;
     }
 
-    public function setOdd(int $odd): static
+    public function setCurrentOdd(float $currentOdd): static
     {
-        $this->odd = $odd;
+        $this->currentOdd = $currentOdd;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): static
+    {
+        $this->event = $event;
 
         return $this;
     }
@@ -73,7 +89,7 @@ class Endings
     {
         if (!$this->bets->contains($bet)) {
             $this->bets->add($bet);
-            $bet->setEnding($this);
+            $bet->setOutcome($this); // Assure-toi que l'entité Bet utilise setOutcome() maintenant
         }
 
         return $this;
@@ -83,8 +99,8 @@ class Endings
     {
         if ($this->bets->removeElement($bet)) {
             // set the owning side to null (unless already changed)
-            if ($bet->getEnding() === $this) {
-                $bet->setEnding(null);
+            if ($bet->getOutcome() === $this) {
+                $bet->setOutcome(null);
             }
         }
 

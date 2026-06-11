@@ -1,0 +1,84 @@
+<div {{ attributes }} class="event-card bg-brand-card rounded-lg overflow-hidden border border-gray-800 transition duration-300 shadow-sm hover:shadow-xl flex flex-col justify-between h-full relative">
+
+    {% set event = this.getEvent() %}
+
+    <div class="bg-gray-800/50 px-4 py-2 border-b border-gray-800 flex justify-between items-center text-xs text-gray-400 font-medium">
+        <span class="uppercase text-brand-red flex items-center gap-1.5 font-bold tracking-wider">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            {{ event.sport }}
+        </span>
+        <span>{{ event.date|date('d/m à H:i') }}</span>
+    </div>
+
+    <div class="p-5 flex flex-col items-center justify-center flex-grow">
+        <h3 class="text-lg md:text-xl font-bold text-center tracking-wide leading-tight text-white">
+            {{ event.competitors | replace({'-': '<br><span class="text-gray-500 text-xs font-normal my-1.5 inline-block uppercase tracking-widest">vs</span><br>'}) | raw }}
+        </h3>
+    </div>
+
+    <div class="px-4 pb-5">
+        <div class="grid grid-cols-3 gap-2">
+            {% for outcome in event.outcomes %}
+                <button type="button"
+                        data-action="live#action"
+                        data-live-action-param="openBetForm"
+                        data-live-id-param="{{ outcome.id }}"
+                        data-live-odd-param="{{ outcome.currentOdd }}"
+                        data-live-label-param="{{ outcome.label }}"
+                        class="group bg-brand-hover hover:bg-brand-red rounded flex flex-col items-center justify-center py-2.5 border border-transparent transition cursor-pointer w-full focus:outline-none {% if this.selectedOutcomeId == outcome.id %}ring-2 ring-brand-red bg-brand-red/20{% endif %}">
+                    <span class="text-[10px] text-gray-400 group-hover:text-white mb-0.5 font-medium uppercase tracking-wider truncate w-full text-center px-1">
+                        {{ outcome.label }}
+                    </span>
+                    <span class="text-lg font-black text-brand-odd group-hover:text-white">
+                        {{ outcome.currentOdd|number_format(2, '.', ',') }}
+                    </span>
+                </button>
+            {% else %}
+                <div class="col-span-3 text-center text-xs text-gray-500 py-3 bg-brand-dark rounded border border-gray-800">Cotes indisponibles</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if this.isBetFormOpen %}
+        <div class="bg-gray-900 border-t border-brand-red p-4">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-sm font-bold text-white uppercase">
+                    {{ this.selectedLabel }}
+                    <span class="text-brand-odd ml-1">x{{ this.odd|number_format(2, '.', ',') }}</span>
+                </span>
+                <button type="button"
+                        data-action="live#action"
+                        data-live-action-param="closeForm"
+                        class="text-gray-500 hover:text-brand-red font-black text-xl leading-none">
+                    &times;
+                </button>
+            </div>
+
+            {{ form_start(form, {
+                'attr': {
+                    'data-action': 'live#action:prevent',
+                    'data-live-action-param': 'saveBet',
+                    'data-model': 'on(blur)|*'
+                }
+            }) }}
+
+            <div class="flex gap-2">
+                <div class="relative w-full">
+                    {{ form_row(form.amount) }}
+                </div>
+                <button type="submit"
+                        class="bg-brand-red hover:bg-red-700 text-white font-bold px-4 py-2 rounded uppercase text-sm w-1/2">
+                    Valider
+                </button>
+            </div>
+
+            <div class="flex justify-between items-center text-xs mt-1">
+                <span class="text-gray-400 font-bold uppercase">Gains potentiels</span>
+                <span class="text-green-400 font-black text-base">
+                    {{ this.potentialWins|number_format(2, '.', ',') }} €
+                </span>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+</div>

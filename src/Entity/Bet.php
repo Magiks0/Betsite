@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\BetStatusEnum;
 use App\Repository\BetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BetRepository::class)]
 class Bet
@@ -20,19 +22,21 @@ class Bet
     private ?User $author = null;
 
     #[ORM\ManyToOne(inversedBy: 'bets')]
-    private ?Endings $ending = null;
+    private ?Outcome $outcome = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Positive]
     private ?float $amount = null;
 
     #[ORM\Column]
-    private ?float $odd = null;
+    private ?float $odd = 1.50;
 
     #[ORM\Column(length: 255)]
-    private ?string $date = null;
+    private ?\DateTime $date = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    private ?BetStatusEnum $status = null;
 
     public function getId(): ?int
     {
@@ -63,14 +67,14 @@ class Bet
         return $this;
     }
 
-    public function getEnding(): ?Endings
+    public function getOutcome(): ?Outcome
     {
-        return $this->ending;
+        return $this->outcome;
     }
 
-    public function setEnding(?Endings $ending): static
+    public function setEnding(?Outcome $outcome): static
     {
-        $this->ending = $ending;
+        $this->outcome = $outcome;
 
         return $this;
     }
@@ -92,31 +96,31 @@ class Bet
         return $this->odd;
     }
 
-    public function setOdd(float $odd): static
+    public function setOdd(?float $odd): static
     {
         $this->odd = $odd;
 
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
 
-    public function setDate(string $date): static
+    public function setDate(\DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?BetStatusEnum
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(BetStatusEnum $status): static
     {
         $this->status = $status;
 
